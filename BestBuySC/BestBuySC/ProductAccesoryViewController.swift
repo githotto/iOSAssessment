@@ -14,7 +14,7 @@ class ProductAccesoryViewController: UIViewController, UICollectionViewDelegateF
     var log = Loggerithm.newLogger(LogLevel.Warning)
 
     //MARK: - IBOutlets
-    @IBOutlet weak var activityCollectionView: UICollectionView!
+    @IBOutlet weak var productCollectionView: UICollectionView!
 
     //MARK: - Member variables
     var productItem: AnyObject? {
@@ -23,47 +23,59 @@ class ProductAccesoryViewController: UIViewController, UICollectionViewDelegateF
             self.configureView()
         }
     }
+    var accessoryProducts: [BestBuyProduct]!
 
     //MARK: - CollectionView delegates
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ProductCollectionViewCell", forIndexPath: indexPath) as! ProductCollectionViewCell
         log.debug("indexPath=\(indexPath)")
-//        if let productItem = productItem as? BestBuyProduct {
-//
-//        }
-//        cell.imageName = productItem.acces
-        //TODO:
+        cell.imageName = accessoryProducts[indexPath.row].imageName
         return cell
+    }
+
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let accessories = self.accessoryProducts {
+            return accessories.count
+        } else {
+            return 0
+        }
     }
 
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
 
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //TODO: return productItem.accesories.count
-        return 0
-    }
-
     //MARK: - View lifecycle
     func configureView() {
         // Update the user interface for the detail item.
         if let productItem = self.productItem as? BestBuyProduct {
-            //TODO:
+            accessoryProducts = productItem.accessoryProducts
         }
+    }
+
+    func updateItemList() {
+        productCollectionView.reloadData()
+        if let accessories = accessoryProducts {
+            self.title = "Accesories (" + String(accessories.count) + ")"
+        }
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        updateItemList()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.configureView()
-
-        activityCollectionView.backgroundColor = UIColor.whiteColor()
-        activityCollectionView.dataSource = self
-        activityCollectionView.delegate = self
-        activityCollectionView.registerClass(ProductCollectionViewCell.self, forCellWithReuseIdentifier: "ProductCollectionViewCell")
-//        activityColors = [String]()
-//        updateActivityColorSelection()
+        productCollectionView.backgroundColor = UIColor.whiteColor()
+        productCollectionView.dataSource = self
+        productCollectionView.delegate = self
+        productCollectionView.registerClass(ProductCollectionViewCell.self, forCellWithReuseIdentifier: "ProductCollectionViewCell")
+        updateItemList()
+//        productCollectionView.reloadData()
+//        self.title = "Accessories"
     }
 
     //MARK: - Memory management

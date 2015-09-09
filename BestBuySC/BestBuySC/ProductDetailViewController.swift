@@ -32,8 +32,11 @@ class ProductDetailViewController: UIViewController {
 
     // MARK: - Segues
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        log.debug("Transfer productItem=\(productItem) to \(segue.identifier)")
         if segue.identifier == "segueShowRelatedProducts" {
-            (segue.destinationViewController as! RelatedProductsTableViewController).productItem = productItem
+            (segue.destinationViewController as! RelatedProductListTableViewController).productItem = productItem
+        } else if segue.identifier == "segueShowAccessories" {
+            (segue.destinationViewController as! ProductAccesoryViewController).productItem = productItem
         }
     }
 
@@ -41,7 +44,6 @@ class ProductDetailViewController: UIViewController {
     func configureView() {
         // Update the user interface for the detail item.
         if let productItem = self.productItem as? BestBuyProduct {
-            log.error("TODO")
             if let image = self.image {
                 image.image = UIImage(named: productItem.imageName)
             }
@@ -73,8 +75,7 @@ class ProductDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.title = "Product"
     }
 
     override func didReceiveMemoryWarning() {

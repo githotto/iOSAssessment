@@ -117,10 +117,10 @@
             </objects>
             <point key="canvasLocation" x="745" y="63"/>
         </scene>
-        <!--Detail-->
+        <!--ProductDetail-->
         <scene sceneID="Cn3-H9-jdl">
             <objects>
-                <viewController title="Detail" id="Ah7-4n-0Wa" customClass="ProductDetailViewController" customModule="BestBuySC" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Detail" id="Ah7-4n-0Wa" userLabel="ProductDetail" customClass="ProductDetailViewController" customModule="BestBuySC" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cIm-e0-J51"/>
                         <viewControllerLayoutGuide type="bottom" id="a0L-h9-sNL"/>
@@ -241,8 +241,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="wzI-cL-FOj">
-                                <rect key="frame" x="16" y="72" width="568" height="508"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="wzI-cL-FOj">
+                                <rect key="frame" x="16" y="72" width="568" height="520"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="VPw-sL-m6P">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -250,7 +250,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProductCollectionViewCell" id="IUE-c8-dpS">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ProductCollectionViewCell" id="IUE-c8-dpS" customClass="ProductCollectionViewCell" customModule="BestBuySC" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -263,9 +263,15 @@
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="egv-K9-Ehb" firstAttribute="top" secondItem="wzI-cL-FOj" secondAttribute="bottom" constant="8" id="bSe-g3-PYu"/>
+                            <constraint firstItem="wzI-cL-FOj" firstAttribute="top" secondItem="IyP-po-kJe" secondAttribute="bottom" constant="8" id="mIQ-8e-xHb"/>
+                            <constraint firstAttribute="trailing" secondItem="wzI-cL-FOj" secondAttribute="trailing" constant="16" id="msW-2b-dgN"/>
+                            <constraint firstItem="wzI-cL-FOj" firstAttribute="leading" secondItem="OFW-Q6-wHp" secondAttribute="leading" constant="16" id="tNj-gM-vNi"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="activityCollectionView" destination="wzI-cL-FOj" id="tJ1-ho-5aK"/>
+                        <outlet property="productCollectionView" destination="wzI-cL-FOj" id="YtP-PP-jNM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dFe-54-sbS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -293,13 +299,13 @@
         <!--RelatedProductList-->
         <scene sceneID="LYi-vj-Vju">
             <objects>
-                <tableViewController title="Master" id="OIk-tn-18C" userLabel="RelatedProductList" customClass="RelatedProductsTableViewController" customModule="BestBuySC" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Master" id="OIk-tn-18C" userLabel="RelatedProductList" customClass="RelatedProductListTableViewController" customModule="BestBuySC" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="136" sectionHeaderHeight="22" sectionFooterHeight="22" id="lQR-Kc-8b7">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ProductInfoCell" rowHeight="136" id="F6C-EN-kd9" userLabel="ProductInfoCell" customClass="ProductInfoCell" customModule="BestBuySC" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ProductInfoCell" rowHeight="136" id="F6C-EN-kd9" userLabel="ProductInfoCell" customClass="ProductInfoCell" customModule="BestBuySC" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F6C-EN-kd9" id="wIF-jh-yAv">
@@ -337,7 +343,7 @@
                             <outlet property="delegate" destination="OIk-tn-18C" id="6ES-Y8-9QZ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Products" id="FbQ-LG-eFU"/>
+                    <navigationItem key="navigationItem" title="Related" id="FbQ-LG-eFU"/>
                     <connections>
                         <outlet property="relatedProductsTable" destination="lQR-Kc-8b7" id="fn0-Kf-RAe"/>
                     </connections>

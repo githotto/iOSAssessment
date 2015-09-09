@@ -14,6 +14,7 @@ extension Loggerithm {
         // .All, .Verbose, .Debug, .Info, .Warning, .Error, .Off
         return newLogger(LogLevel.All)
     }
+    // NOTE: In order to get colors see: https://github.com/robbiehanson/XcodeColors
     static func newLogger(logLevel: LogLevel) -> Loggerithm {
         var log = Loggerithm()
         log.logLevel = logLevel

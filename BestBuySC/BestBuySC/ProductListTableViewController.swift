@@ -21,7 +21,7 @@ class ProductListTableViewController: UITableViewController {
     var sessionItem: AnyObject? {
         didSet {
             // Update the view.
-            log.warning("")
+            log.debug("")
             self.configureView()
         }
     }
@@ -65,7 +65,7 @@ class ProductListTableViewController: UITableViewController {
     func updateItemList() {
         productTable.reloadData()
         if let products = productInfoObjects {
-            self.title = "Items (" + String(products.count) + ")"
+            self.title = "Products (" + String(products.count) + ")"
         }
     }
 
@@ -73,8 +73,7 @@ class ProductListTableViewController: UITableViewController {
     func configureView() {
         // Update the user interface for the detail item.
         if let sessionItem = self.sessionItem as? BestBuySession {
-            log.error("TODO")
-            log.warning("sessionItem=\(sessionItem)")
+            log.debug("sessionItem=\(sessionItem)")
             productInfoObjects = sessionItem.searchResults
         }
     }

@@ -9,7 +9,7 @@
 import UIKit
 import Loggerithm
 
-class RelatedProductsTableViewController: UITableViewController {
+class RelatedProductListTableViewController: UITableViewController {
     // MARK: - Logger
     var log = Loggerithm.newLogger(LogLevel.Warning)
 
@@ -21,7 +21,7 @@ class RelatedProductsTableViewController: UITableViewController {
     var productItem: AnyObject? {
         didSet {
             // Update the view.
-            log.warning("")
+            log.debug("")
             self.configureView()
         }
     }
@@ -32,8 +32,8 @@ class RelatedProductsTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let productItem = self.productItem as? BestBuySession {
-            return productItem.searchResults.count
+        if let productItem = self.productItem as? BestBuyProduct {
+            return productItem.relatedProducts.count
         } else {
             return 0
         }
@@ -42,8 +42,8 @@ class RelatedProductsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ProductInfoCell", forIndexPath: indexPath) as! ProductInfoCell
         if let products = self.relatedProductObjects {
-            log.warning("products[\(indexPath.row)] ...")
             let item = products[indexPath.row] as BestBuyProduct
+            log.debug("products[\(indexPath.row)]=\(item.productName)")
             if let imageData = UIImage(named: item.imageName) {
                 cell.productImageView.image = imageData
             }
@@ -56,7 +56,7 @@ class RelatedProductsTableViewController: UITableViewController {
     func updateItemList() {
         relatedProductsTable.reloadData()
         if let products = relatedProductObjects {
-            self.title = "RItems (" + String(products.count) + ")"
+            self.title = "Related (" + String(products.count) + ")"
         }
     }
 
@@ -64,8 +64,7 @@ class RelatedProductsTableViewController: UITableViewController {
     func configureView() {
         // Update the user interface for the detail item.
         if let productItem = self.productItem as? BestBuyProduct {
-            log.error("TODO")
-            log.warning("productItem=\(productItem)")
+            log.debug("productItem=\(productItem)")
             relatedProductObjects = productItem.relatedProducts
         }
     }

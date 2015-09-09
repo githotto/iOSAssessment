@@ -20,11 +20,12 @@
 		27AE67D01BA0239900D8CEBD /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67CF1BA0239900D8CEBD /* SearchViewController.swift */; };
 		27AE67D21BA0256F00D8CEBD /* ProductListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67D11BA0256F00D8CEBD /* ProductListTableViewController.swift */; };
 		27AE67D41BA0258700D8CEBD /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67D31BA0258700D8CEBD /* ProductDetailViewController.swift */; };
-		27AE67D61BA025B500D8CEBD /* RelatedProductsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67D51BA025B500D8CEBD /* RelatedProductsTableViewController.swift */; };
+		27AE67D61BA025B500D8CEBD /* RelatedProductListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67D51BA025B500D8CEBD /* RelatedProductListTableViewController.swift */; };
 		27AE67DA1BA0269B00D8CEBD /* ProductAccesoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67D91BA0269B00D8CEBD /* ProductAccesoryViewController.swift */; };
 		27AE67DC1BA0270100D8CEBD /* BestBuyProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67DB1BA0270100D8CEBD /* BestBuyProduct.swift */; };
 		27AE67DE1BA0286E00D8CEBD /* ProductInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67DD1BA0286E00D8CEBD /* ProductInfoCell.swift */; };
 		27AE67E01BA02DCF00D8CEBD /* BestBuySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67DF1BA02DCF00D8CEBD /* BestBuySession.swift */; };
+		27B563491BA0DF6500C01BDD /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B563481BA0DF6500C01BDD /* JSON.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,11 +55,12 @@
 		27AE67CF1BA0239900D8CEBD /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		27AE67D11BA0256F00D8CEBD /* ProductListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductListTableViewController.swift; sourceTree = "<group>"; };
 		27AE67D31BA0258700D8CEBD /* ProductDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
-		27AE67D51BA025B500D8CEBD /* RelatedProductsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedProductsTableViewController.swift; sourceTree = "<group>"; };
+		27AE67D51BA025B500D8CEBD /* RelatedProductListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedProductListTableViewController.swift; sourceTree = "<group>"; };
 		27AE67D91BA0269B00D8CEBD /* ProductAccesoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductAccesoryViewController.swift; sourceTree = "<group>"; };
 		27AE67DB1BA0270100D8CEBD /* BestBuyProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestBuyProduct.swift; sourceTree = "<group>"; };
 		27AE67DD1BA0286E00D8CEBD /* ProductInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductInfoCell.swift; sourceTree = "<group>"; };
 		27AE67DF1BA02DCF00D8CEBD /* BestBuySession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestBuySession.swift; sourceTree = "<group>"; };
+		27B563481BA0DF6500C01BDD /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		6D7F1740D83802867950FA98 /* Pods-BestBuySC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestBuySC.release.xcconfig"; path = "Pods/Target Support Files/Pods-BestBuySC/Pods-BestBuySC.release.xcconfig"; sourceTree = "<group>"; };
 		8D9B326B00CE2E3739834206 /* Pods-BestBuySC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestBuySC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BestBuySC/Pods-BestBuySC.debug.xcconfig"; sourceTree = "<group>"; };
 		D6C20DC14CDED87D0360DB70 /* Pods_BestBuySC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BestBuySC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,12 +118,13 @@
 				27AE67DB1BA0270100D8CEBD /* BestBuyProduct.swift */,
 				27AE67DF1BA02DCF00D8CEBD /* BestBuySession.swift */,
 				274E9D881BA048E100A4CE67 /* Extensions.swift */,
+				27B563481BA0DF6500C01BDD /* JSON.swift */,
 				27AE67D91BA0269B00D8CEBD /* ProductAccesoryViewController.swift */,
 				2715F2C31BA06E7C00068ED0 /* ProductCollectionViewCell.swift */,
 				27AE67D31BA0258700D8CEBD /* ProductDetailViewController.swift */,
 				27AE67DD1BA0286E00D8CEBD /* ProductInfoCell.swift */,
 				27AE67D11BA0256F00D8CEBD /* ProductListTableViewController.swift */,
-				27AE67D51BA025B500D8CEBD /* RelatedProductsTableViewController.swift */,
+				27AE67D51BA025B500D8CEBD /* RelatedProductListTableViewController.swift */,
 				27AE67CF1BA0239900D8CEBD /* SearchViewController.swift */,
 			);
 			path = BestBuySC;
@@ -320,7 +323,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27AE67D61BA025B500D8CEBD /* RelatedProductsTableViewController.swift in Sources */,
+				27AE67D61BA025B500D8CEBD /* RelatedProductListTableViewController.swift in Sources */,
+				27B563491BA0DF6500C01BDD /* JSON.swift in Sources */,
 				27AE67B21BA01FD700D8CEBD /* DetailViewController.swift in Sources */,
 				27AE67E01BA02DCF00D8CEBD /* BestBuySession.swift in Sources */,
 				27AE67B01BA01FD700D8CEBD /* MasterViewController.swift in Sources */,
