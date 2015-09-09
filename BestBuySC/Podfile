@@ -1,0 +1,11 @@
+
+source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
+
+target 'BestBuySC' do
+	pod 'Loggerithm', '~> 1.2'
+end
+
+target 'BestBuySCTests' do
+
+end

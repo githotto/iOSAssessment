@@ -1,0 +1,10 @@
+PODS:
+  - Loggerithm (1.2)
+
+DEPENDENCIES:
+  - Loggerithm (~> 1.2)
+
+SPEC CHECKSUMS:
+  Loggerithm: 5c51abff641fde338a0a4ae4cfe3a4dc042bf4f9
+
+COCOAPODS: 0.38.2
