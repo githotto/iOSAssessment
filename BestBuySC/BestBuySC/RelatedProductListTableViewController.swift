@@ -8,6 +8,8 @@
 
 import UIKit
 import Loggerithm
+import Alamofire
+import SwiftyJSON
 
 class RelatedProductListTableViewController: UITableViewController {
     // MARK: - Logger
@@ -17,11 +19,14 @@ class RelatedProductListTableViewController: UITableViewController {
     @IBOutlet var relatedProductsTable: UITableView!
 
     // MARK: - Member variables
-    var relatedProductObjects: [BestBuyProduct]!
+    var relatedProductList: [BestBuyProduct]! {
+        didSet {
+            updateRelatedProductList()
+        }
+    }
     var productItem: AnyObject? {
         didSet {
             // Update the view.
-            log.debug("")
             self.configureView()
         }
     }
@@ -32,31 +37,27 @@ class RelatedProductListTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let productItem = self.productItem as? BestBuyProduct {
-            return productItem.relatedProducts.count
-        } else {
-            return 0
-        }
+        return (self.productItem as? BestBuyProduct)?.relatedProducts.count ?? 0
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ProductInfoCell", forIndexPath: indexPath) as! ProductInfoCell
-        if let products = self.relatedProductObjects {
-            let item = products[indexPath.row] as BestBuyProduct
-            log.debug("products[\(indexPath.row)]=\(item.productName)")
-            if let imageData = UIImage(named: item.imageName) {
-                cell.productImageView.image = imageData
+        if let products = self.relatedProductList {
+            if indexPath.row < products.count {
+                let item = products[indexPath.row] as BestBuyProduct
+                let imageURL = NSURL(string: item.thumbnailImageURL)
+                cell.productImageView.hnk_setImageFromURL(imageURL!)
+                cell.productName!.text = item.name
+                cell.productPrice!.text = "\(item.regularPrice)"
             }
-            cell.productName!.text = item.productName
-            cell.productPrice!.text = "\(item.price)"
         }
         return cell
     }
 
-    func updateItemList() {
-        relatedProductsTable.reloadData()
-        if let products = relatedProductObjects {
-            self.title = "Related (" + String(products.count) + ")"
+    func updateRelatedProductList() {
+        if let table = relatedProductsTable, let relatedProducts = relatedProductList {
+            table.reloadData()
+            self.title = "Related (" + String(relatedProducts.count) + ")"
         }
     }
 
@@ -64,19 +65,57 @@ class RelatedProductListTableViewController: UITableViewController {
     func configureView() {
         // Update the user interface for the detail item.
         if let productItem = self.productItem as? BestBuyProduct {
-            log.debug("productItem=\(productItem)")
-            relatedProductObjects = productItem.relatedProducts
+            relatedProductList = productItem.relatedProducts
+        }
+    }
+
+    func getRelatedProducts() {
+        if let productItem = self.productItem as? BestBuyProduct {
+            // Clear relatedProductObjects.
+            relatedProductList = [BestBuyProduct]()
+            productItem.relatedProducts = relatedProductList
+            // Get reference to session and perform appropriate sku-queries.
+            let session = productItem.session
+            for skuRelatedProduct in productItem.skuRelatedProducts {
+                let skuRequest = session.getSKUQuery(skuRelatedProduct["sku"].intValue)
+                Alamofire.request(.GET, skuRequest)
+                    .responseJSON { (req, res, json, error) in
+                        if error != nil {
+                            self.log.error("AFrequest='\(req)', response='\(res)', failed with error='\(error)'")
+                            let errDetail = res?.allHeaderFields
+                            let errCode = res?.statusCode
+                            let title = "Oops, something went wrong!"
+                            let message = "\(errDetail)"
+                            let alert: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+                            let actionOK: UIAlertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
+                            alert.addAction(actionOK)
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        } else {
+                            let json = JSON(json!)
+                            let bbProduct = BestBuyProduct(json: json.dictionaryValue, session: session)
+                            self.relatedProductList.append(bbProduct)
+                            productItem.relatedProducts = self.relatedProductList
+                            // Note: need to add update-call since last relatedProductList.didSet doesn't do it!??
+                            self.updateRelatedProductList()
+                        }
+                }
+                // Note: If we get the error "Account Over Queries Per Second Limit"
+                //       we need to add a delay between consecutive calls here.
+                var delayQueriesPerSecondLimit: NSTimeInterval = 0.21
+                NSThread.sleepForTimeInterval(delayQueriesPerSecondLimit)
+            }
         }
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        updateItemList()
+        updateRelatedProductList()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
+        getRelatedProducts()
     }
 
     //MARK: - Memory management

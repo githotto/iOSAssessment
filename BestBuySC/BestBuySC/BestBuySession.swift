@@ -7,31 +7,49 @@
 //
 
 import Foundation
+import Loggerithm
+import Alamofire
+import SwiftyJSON
 
 class BestBuySession {
+    // MARK: - Logger
+    var log = Loggerithm.newLogger(LogLevel.Warning)
 
-    var searchTerm = "Enter your productname here"
+    // MARK: - Member variables.
+    var searchRequest = ""
+    private var searchRequestFormat = "https://api.bestbuy.com/v1/products(search=%@)?apiKey=m5ykepuxrkwg94z2mwyqjv2p&format=json"
+    var searchResponsePath = ""
+    var searchTerm: String = "" {
+        didSet {
+            self.searchRequest = NSString(format: searchRequestFormat, searchTerm) as String
+        }
+    }
     var searchResults = [BestBuyProduct]()
 
+    // MARK: - Initialization.
     init() {
-        //Note: for testing only!
-        mockInit()
+        // Determine path where response is saved.
+        let searchResultFile = "SearchResult.json"
+        if let dirs: [String] = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true) as? [String] {
+            let docDir = dirs[0]
+            searchResponsePath = docDir.stringByAppendingPathComponent(searchResultFile)
+        } else {
+            log.error("Cannot determine dirs for categoryResponsePath and searchResponsePath!")
+        }
     }
 
-    func mockInit() {
-        searchResults.append(BestBuyProduct(imageName: "bloes", productName: "Bloes", price: 1.0))
-        searchResults.append(BestBuyProduct(imageName: "broek", productName: "Broek", price: 2.0))
-        searchResults.append(BestBuyProduct(imageName: "hemd", productName: "Hemd", price: 3.0))
-        searchResults.append(BestBuyProduct(imageName: "hoed", productName: "Hoed", price: 4.0))
-        searchResults.append(BestBuyProduct(imageName: "jurk", productName: "Jurk", price: 5.0))
-        searchResults.append(BestBuyProduct(imageName: "laars", productName: "Laars", price: 6.0))
-        // Add related products for first item only!
-        searchResults[0].relatedProducts.append(BestBuyProduct(imageName: "pet", productName: "Pet", price: 1.1))
-        searchResults[0].relatedProducts.append(BestBuyProduct(imageName: "trui", productName: "Trui", price: 1.2))
-        searchResults[0].relatedProducts.append(BestBuyProduct(imageName: "broek", productName: "Broek", price: 1.3))
-        searchResults[0].relatedProducts.append(BestBuyProduct(imageName: "sandaal", productName: "Sandaal", price: 1.4))
-        // Add accessory items for first item only!
-        searchResults[0].accessoryProducts.append(BestBuyProduct(imageName: "hemd", productName: "Hemd", price: 2.1))
-        searchResults[0].accessoryProducts.append(BestBuyProduct(imageName: "hoed", productName: "Hoed", price: 2.2))
+    // MARK: - Get appropriate SKU-query.
+    func getSKUQuery(skuNr: Int) -> String {
+        let skuQueryFormat = "http://api.bestbuy.com/v1/products/%d.json?apiKey=m5ykepuxrkwg94z2mwyqjv2p"
+        return String(format: skuQueryFormat, skuNr)
+    }
+
+    // MARK: - Read/save JSON-response results (debugging only).
+    func readResponse() -> String {
+        return String(contentsOfFile: searchResponsePath, encoding: NSUTF8StringEncoding, error: nil)!
+    }
+
+    func saveResponse(response: String, path: String) {
+        response.writeToFile(path, atomically: false, encoding: NSUTF8StringEncoding, error: nil)
     }
 }

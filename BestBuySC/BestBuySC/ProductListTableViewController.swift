@@ -8,6 +8,9 @@
 
 import UIKit
 import Loggerithm
+import Alamofire
+import SwiftyJSON
+import Haneke
 
 class ProductListTableViewController: UITableViewController {
     // MARK: - Logger
@@ -17,11 +20,14 @@ class ProductListTableViewController: UITableViewController {
     @IBOutlet var productTable: UITableView!
 
     // MARK: - Member variables
-    var productInfoObjects: [BestBuyProduct]!
+    var productList: [BestBuyProduct]! {
+        didSet {
+            updateProductList()
+        }
+    }
     var sessionItem: AnyObject? {
         didSet {
             // Update the view.
-            log.debug("")
             self.configureView()
         }
     }
@@ -30,7 +36,7 @@ class ProductListTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "segueShowProductDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow() {
-                let object = productInfoObjects[indexPath.row] as BestBuyProduct
+                let object = productList[indexPath.row] as BestBuyProduct
                 (segue.destinationViewController as! ProductDetailViewController).productItem = object
             }
         }
@@ -51,40 +57,71 @@ class ProductListTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ProductInfoCell", forIndexPath: indexPath) as! ProductInfoCell
-        if let products = self.productInfoObjects {
-            let item = products[indexPath.row] as BestBuyProduct
-            if let imageData = UIImage(named: item.imageName) {
-                cell.productImageView.image = imageData
+        if let products = self.productList {
+            if indexPath.row < products.count {
+                let item = products[indexPath.row] as BestBuyProduct
+                let imageURL = NSURL(string: item.thumbnailImageURL)
+                cell.productImageView.hnk_setImageFromURL(imageURL!)
+                log.debug("cell[\(indexPath.row)].imageSize=\(cell.productImageView.image?.size)")
+                cell.productName!.text = item.name
+                cell.productRelatedAndAccesories.text = item.getSKUinfo()
+                cell.productPrice!.text = "\(item.regularPrice)"
             }
-            cell.productName!.text = item.productName
-            cell.productPrice!.text = "\(item.price)"
         }
         return cell
-    }
-
-    func updateItemList() {
-        productTable.reloadData()
-        if let products = productInfoObjects {
-            self.title = "Products (" + String(products.count) + ")"
-        }
     }
 
     // MARK: - View lifecycle
     func configureView() {
         // Update the user interface for the detail item.
         if let sessionItem = self.sessionItem as? BestBuySession {
-            log.debug("sessionItem=\(sessionItem)")
-            productInfoObjects = sessionItem.searchResults
+            productList = sessionItem.searchResults
+        }
+    }
+
+    func getProducts() {
+        log.debug("")
+        if let session = self.sessionItem as? BestBuySession {
+            productList = [BestBuyProduct]()
+            session.searchResults = productList
+            Alamofire.request(.GET, session.searchRequest)
+                .responseJSON { (req, res, json, error) in
+                    if error != nil {
+                        self.log.error("AFrequest='\(req)', response='\(res)', failed with error='\(error)'")
+                    } else {
+                        let json = JSON(json!)
+                        let products = json["products"]
+                        for index in 0..<products.count {
+                            let product = products[index].dictionaryValue
+                            let bbProduct = BestBuyProduct(json: product, session: session)
+                            self.productList.append(bbProduct)
+                        }
+                        session.searchResults = self.productList
+                        //Note: need to add below update-call since last productList.didSet doesn't do it!??
+                        self.updateProductList()
+                    }
+                }
+                .responseString { (_, _, string, _) in
+                    session.saveResponse(string!, path: session.searchResponsePath)
+            }
+        }
+    }
+
+    func updateProductList() {
+        if let table = productTable, let products = productList {
+            table.reloadData()
+            self.title = "Products (" + String(products.count) + ")"
         }
     }
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        updateItemList()
+        updateProductList()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        getProducts()
     }
 
     //MARK: - Memory management

@@ -45,25 +45,27 @@ class ProductDetailViewController: UIViewController {
         // Update the user interface for the detail item.
         if let productItem = self.productItem as? BestBuyProduct {
             if let image = self.image {
-                image.image = UIImage(named: productItem.imageName)
+                let imageURL = NSURL(string: productItem.imageURL)
+                image.hnk_setImageFromURL(imageURL!)
             }
             if let name = self.name {
-                name.text = "Name: " + productItem.productName
+                name.text = "Name: " + productItem.name
             }
             if let price = self.price {
-                price.text = "Price: \(productItem.price)"
+                price.text = "Price: \(productItem.regularPrice)"
             }
             if let salePrice = self.salePrice {
+                salePrice.hidden = !productItem.onSale
                 salePrice.text = "Saleprice: \(productItem.salePrice)"
             }
             if let nrReviews = self.nrReviews {
-                nrReviews.text = "Number of reviews: \(productItem.nrReviews)"
+                nrReviews.text = "Number of reviews: \(productItem.customerReviewCount)"
             }
             if let reviewAverage = self.reviewAverage {
-                reviewAverage.text = "Review average: \(productItem.reviewAverage)"
+                reviewAverage.text = "Review average: \(productItem.customerReviewAverage)"
             }
             if let remark = self.remark {
-                remark.text = "Description: " + productItem.remark
+                remark.text = "Description: " + productItem.shortDescription
             }
         }
     }

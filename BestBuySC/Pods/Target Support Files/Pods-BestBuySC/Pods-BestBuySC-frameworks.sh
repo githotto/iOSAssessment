@@ -53,9 +53,13 @@ code_sign_if_enabled() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods-BestBuySC/Alamofire.framework'
+  install_framework 'Pods-BestBuySC/Haneke.framework'
   install_framework 'Pods-BestBuySC/Loggerithm.framework'
+  install_framework 'Pods-BestBuySC/SwiftyJSON.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-BestBuySC/Alamofire.framework'
+  install_framework 'Pods-BestBuySC/Haneke.framework'
   install_framework 'Pods-BestBuySC/Loggerithm.framework'
+  install_framework 'Pods-BestBuySC/SwiftyJSON.framework'
 fi

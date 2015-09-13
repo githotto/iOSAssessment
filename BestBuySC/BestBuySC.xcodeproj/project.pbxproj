@@ -11,8 +11,6 @@
 		2715F2C41BA06E7C00068ED0 /* ProductCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2715F2C31BA06E7C00068ED0 /* ProductCollectionViewCell.swift */; };
 		274E9D891BA048E100A4CE67 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274E9D881BA048E100A4CE67 /* Extensions.swift */; };
 		27AE67AE1BA01FD700D8CEBD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67AD1BA01FD700D8CEBD /* AppDelegate.swift */; };
-		27AE67B01BA01FD700D8CEBD /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67AF1BA01FD700D8CEBD /* MasterViewController.swift */; };
-		27AE67B21BA01FD700D8CEBD /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67B11BA01FD700D8CEBD /* DetailViewController.swift */; };
 		27AE67B51BA01FD700D8CEBD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 27AE67B31BA01FD700D8CEBD /* Main.storyboard */; };
 		27AE67B71BA01FD700D8CEBD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27AE67B61BA01FD700D8CEBD /* Images.xcassets */; };
 		27AE67BA1BA01FD700D8CEBD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27AE67B81BA01FD700D8CEBD /* LaunchScreen.xib */; };
@@ -25,7 +23,6 @@
 		27AE67DC1BA0270100D8CEBD /* BestBuyProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67DB1BA0270100D8CEBD /* BestBuyProduct.swift */; };
 		27AE67DE1BA0286E00D8CEBD /* ProductInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67DD1BA0286E00D8CEBD /* ProductInfoCell.swift */; };
 		27AE67E01BA02DCF00D8CEBD /* BestBuySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AE67DF1BA02DCF00D8CEBD /* BestBuySession.swift */; };
-		27B563491BA0DF6500C01BDD /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B563481BA0DF6500C01BDD /* JSON.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,8 +41,6 @@
 		27AE67A81BA01FD700D8CEBD /* BestBuySC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BestBuySC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27AE67AC1BA01FD700D8CEBD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27AE67AD1BA01FD700D8CEBD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		27AE67AF1BA01FD700D8CEBD /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
-		27AE67B11BA01FD700D8CEBD /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		27AE67B41BA01FD700D8CEBD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		27AE67B61BA01FD700D8CEBD /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		27AE67B91BA01FD700D8CEBD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -54,13 +49,12 @@
 		27AE67C51BA01FD700D8CEBD /* BestBuySCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestBuySCTests.swift; sourceTree = "<group>"; };
 		27AE67CF1BA0239900D8CEBD /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		27AE67D11BA0256F00D8CEBD /* ProductListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductListTableViewController.swift; sourceTree = "<group>"; };
-		27AE67D31BA0258700D8CEBD /* ProductDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
+		27AE67D31BA0258700D8CEBD /* ProductDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ProductDetailViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		27AE67D51BA025B500D8CEBD /* RelatedProductListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedProductListTableViewController.swift; sourceTree = "<group>"; };
 		27AE67D91BA0269B00D8CEBD /* ProductAccesoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductAccesoryViewController.swift; sourceTree = "<group>"; };
-		27AE67DB1BA0270100D8CEBD /* BestBuyProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestBuyProduct.swift; sourceTree = "<group>"; };
+		27AE67DB1BA0270100D8CEBD /* BestBuyProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = BestBuyProduct.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		27AE67DD1BA0286E00D8CEBD /* ProductInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductInfoCell.swift; sourceTree = "<group>"; };
 		27AE67DF1BA02DCF00D8CEBD /* BestBuySession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestBuySession.swift; sourceTree = "<group>"; };
-		27B563481BA0DF6500C01BDD /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		6D7F1740D83802867950FA98 /* Pods-BestBuySC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestBuySC.release.xcconfig"; path = "Pods/Target Support Files/Pods-BestBuySC/Pods-BestBuySC.release.xcconfig"; sourceTree = "<group>"; };
 		8D9B326B00CE2E3739834206 /* Pods-BestBuySC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BestBuySC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BestBuySC/Pods-BestBuySC.debug.xcconfig"; sourceTree = "<group>"; };
 		D6C20DC14CDED87D0360DB70 /* Pods_BestBuySC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BestBuySC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +79,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		278C55AC1BA1FD0800BE0B25 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				27AE67B31BA01FD700D8CEBD /* Main.storyboard */,
+				27AE67B61BA01FD700D8CEBD /* Images.xcassets */,
+				27AE67B81BA01FD700D8CEBD /* LaunchScreen.xib */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		27AE679F1BA01FD700D8CEBD = {
 			isa = PBXGroup;
 			children = (
@@ -109,16 +113,9 @@
 			isa = PBXGroup;
 			children = (
 				27AE67AD1BA01FD700D8CEBD /* AppDelegate.swift */,
-				27AE67AF1BA01FD700D8CEBD /* MasterViewController.swift */,
-				27AE67B11BA01FD700D8CEBD /* DetailViewController.swift */,
-				27AE67B31BA01FD700D8CEBD /* Main.storyboard */,
-				27AE67B61BA01FD700D8CEBD /* Images.xcassets */,
-				27AE67B81BA01FD700D8CEBD /* LaunchScreen.xib */,
-				27AE67AB1BA01FD700D8CEBD /* Supporting Files */,
 				27AE67DB1BA0270100D8CEBD /* BestBuyProduct.swift */,
 				27AE67DF1BA02DCF00D8CEBD /* BestBuySession.swift */,
 				274E9D881BA048E100A4CE67 /* Extensions.swift */,
-				27B563481BA0DF6500C01BDD /* JSON.swift */,
 				27AE67D91BA0269B00D8CEBD /* ProductAccesoryViewController.swift */,
 				2715F2C31BA06E7C00068ED0 /* ProductCollectionViewCell.swift */,
 				27AE67D31BA0258700D8CEBD /* ProductDetailViewController.swift */,
@@ -126,6 +123,8 @@
 				27AE67D11BA0256F00D8CEBD /* ProductListTableViewController.swift */,
 				27AE67D51BA025B500D8CEBD /* RelatedProductListTableViewController.swift */,
 				27AE67CF1BA0239900D8CEBD /* SearchViewController.swift */,
+				278C55AC1BA1FD0800BE0B25 /* UI */,
+				27AE67AB1BA01FD700D8CEBD /* Supporting Files */,
 			);
 			path = BestBuySC;
 			sourceTree = "<group>";
@@ -324,10 +323,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27AE67D61BA025B500D8CEBD /* RelatedProductListTableViewController.swift in Sources */,
-				27B563491BA0DF6500C01BDD /* JSON.swift in Sources */,
-				27AE67B21BA01FD700D8CEBD /* DetailViewController.swift in Sources */,
 				27AE67E01BA02DCF00D8CEBD /* BestBuySession.swift in Sources */,
-				27AE67B01BA01FD700D8CEBD /* MasterViewController.swift in Sources */,
 				27AE67DE1BA0286E00D8CEBD /* ProductInfoCell.swift in Sources */,
 				27AE67D01BA0239900D8CEBD /* SearchViewController.swift in Sources */,
 				2715F2C41BA06E7C00068ED0 /* ProductCollectionViewCell.swift in Sources */,
