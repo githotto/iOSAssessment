@@ -2,18 +2,21 @@ PODS:
   - Alamofire (1.3.1)
   - HanekeSwift (0.9.1)
   - Loggerithm (1.2)
+  - MBProgressHUD (0.9.1)
   - SwiftyJSON (2.2.1)
 
 DEPENDENCIES:
   - Alamofire (~> 1.3)
-  - HanekeSwift
+  - HanekeSwift (~> 0.9.1)
   - Loggerithm (~> 1.2)
+  - MBProgressHUD (~> 0.9.1)
   - SwiftyJSON (~> 2.2.1)
 
 SPEC CHECKSUMS:
   Alamofire: 227a96543f23ce24c69c5052ea4e8bb206008c82
   HanekeSwift: 0301421ff0ef7d441b21981d5fe503a4620f39db
   Loggerithm: 5c51abff641fde338a0a4ae4cfe3a4dc042bf4f9
+  MBProgressHUD: 2a730b1083f7ef24254b5e524d09a85db08ecc5c
   SwiftyJSON: 1bd8b3b8f669dd12a6f88465fdaeaa7a8d1123c6
 
 COCOAPODS: 0.38.2

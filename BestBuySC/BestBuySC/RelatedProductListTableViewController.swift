@@ -10,6 +10,7 @@ import UIKit
 import Loggerithm
 import Alamofire
 import SwiftyJSON
+import MBProgressHUD
 
 class RelatedProductListTableViewController: UITableViewController {
     // MARK: - Logger
@@ -74,35 +75,55 @@ class RelatedProductListTableViewController: UITableViewController {
             // Clear relatedProductObjects.
             relatedProductList = [BestBuyProduct]()
             productItem.relatedProducts = relatedProductList
+
+            // Create an activity/progress-view.
+            let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            progressHUD.labelText = "Fetching related products ..."
+            progressHUD.mode = MBProgressHUDMode.DeterminateHorizontalBar
+            progressHUD.progress = 0.0
+            let nrRelatedProducts = productItem.skuRelatedProducts.count
+            let progressStep = (nrRelatedProducts == 0 ? 1.0 : 1.0 / Float(nrRelatedProducts))
+
             // Get reference to session and perform appropriate sku-queries.
-            let session = productItem.session
-            for skuRelatedProduct in productItem.skuRelatedProducts {
-                let skuRequest = session.getSKUQuery(skuRelatedProduct["sku"].intValue)
-                Alamofire.request(.GET, skuRequest)
-                    .responseJSON { (req, res, json, error) in
-                        if error != nil {
-                            self.log.error("AFrequest='\(req)', response='\(res)', failed with error='\(error)'")
-                            let errDetail = res?.allHeaderFields
-                            let errCode = res?.statusCode
-                            let title = "Oops, something went wrong!"
-                            let message = "\(errDetail)"
-                            let alert: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-                            let actionOK: UIAlertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                            alert.addAction(actionOK)
-                            self.presentViewController(alert, animated: true, completion: nil)
-                        } else {
-                            let json = JSON(json!)
-                            let bbProduct = BestBuyProduct(json: json.dictionaryValue, session: session)
-                            self.relatedProductList.append(bbProduct)
-                            productItem.relatedProducts = self.relatedProductList
-                            // Note: need to add update-call since last relatedProductList.didSet doesn't do it!??
-                            self.updateRelatedProductList()
-                        }
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)) {
+                let session = productItem.session
+                for skuRelatedProduct in productItem.skuRelatedProducts {
+                    let skuRequest = session.getSKUQuery(skuRelatedProduct["sku"].intValue)
+                    Alamofire.request(.GET, skuRequest)
+                        .responseJSON { (req, res, json, error) in
+                            if error != nil {
+                                self.log.error("AFrequest='\(req)', response='\(res)', failed with error='\(error)'")
+                                let errDetail = res?.allHeaderFields
+                                let errCode = res?.statusCode
+                                let title = "Oops, something went wrong!"
+                                let message = "\(errDetail)"
+                                let alert: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+                                let actionOK: UIAlertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
+                                alert.addAction(actionOK)
+                                self.presentViewController(alert, animated: true, completion: nil)
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    progressHUD.progress += progressStep
+                                }
+                            } else {
+                                let json = JSON(json!)
+                                let bbProduct = BestBuyProduct(json: json.dictionaryValue, session: session)
+                                self.relatedProductList.append(bbProduct)
+                                productItem.relatedProducts = self.relatedProductList
+                                // Note: need to add update-call since last relatedProductList.didSet doesn't do it!??
+                                self.updateRelatedProductList()
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    progressHUD.progress += progressStep
+                                }
+                            }
+                    }
+                    // Note: If we get the error "Account Over Queries Per Second Limit"
+                    //       we need to add a delay between consecutive calls here.
+                    var delayQueriesPerSecondLimit: NSTimeInterval = 0.21
+                    NSThread.sleepForTimeInterval(delayQueriesPerSecondLimit)
                 }
-                // Note: If we get the error "Account Over Queries Per Second Limit"
-                //       we need to add a delay between consecutive calls here.
-                var delayQueriesPerSecondLimit: NSTimeInterval = 0.21
-                NSThread.sleepForTimeInterval(delayQueriesPerSecondLimit)
+                dispatch_async(dispatch_get_main_queue()) {
+                    progressHUD.hide(true)
+                }
             }
         }
     }

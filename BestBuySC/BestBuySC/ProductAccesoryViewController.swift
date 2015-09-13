@@ -11,6 +11,7 @@ import Loggerithm
 import Alamofire
 import SwiftyJSON
 import Haneke
+import MBProgressHUD
 
 class ProductAccesoryViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     // MARK: - Logger
@@ -67,39 +68,55 @@ class ProductAccesoryViewController: UIViewController, UICollectionViewDelegateF
             // Clear accessoryProductList.
             accessoryProductList = [BestBuyProduct]()
             productItem.accessoryProducts = accessoryProductList
+
+            // Create an activity/progress-view.
+            let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            progressHUD.labelText = "Fetching related products ..."
+            progressHUD.mode = MBProgressHUDMode.Determinate
+            progressHUD.progress = 0.0
+            let nrAccessories = productItem.skuAccessories.count
+            let progressStep = (nrAccessories == 0 ? 1.0 : 1.0 / Float(nrAccessories))
+
             // Get reference to session and perform appropriate sku-queries.
-            let session = productItem.session
-
-            //TODO: For testing use relatedProduct iso accesoryProduct !!
-            for skuAccessoryProduct in productItem.skuRelatedProducts {
-//            for skuAccessoryProduct in productItem.skuAccessories {
-
-                let skuRequest = session.getSKUQuery(skuAccessoryProduct["sku"].intValue)
-                Alamofire.request(.GET, skuRequest)
-                    .responseJSON { (req, res, json, error) in
-                        if error != nil {
-                            self.log.error("AFrequest='\(req)', response='\(res)', failed with error='\(error)'")
-                            let errDetail = res?.allHeaderFields
-                            let errCode = res?.statusCode
-                            let title = "Oops, something went wrong!"
-                            let message = "\(errDetail)"
-                            let alert: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-                            let actionOK: UIAlertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
-                            alert.addAction(actionOK)
-                            self.presentViewController(alert, animated: true, completion: nil)
-                        } else {
-                            let json = JSON(json!)
-                            let bbProduct = BestBuyProduct(json: json.dictionaryValue, session: session)
-                            self.accessoryProductList.append(bbProduct)
-                            productItem.accessoryProducts = self.accessoryProductList
-                            // Note: need to add update-call since last accessoryProductList.didSet doesn't do it!??
-                            self.updateAccessoryList()
-                        }
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)) {
+                let session = productItem.session
+                for skuAccessoryProduct in productItem.skuAccessories {
+                    let skuRequest = session.getSKUQuery(skuAccessoryProduct["sku"].intValue)
+                    Alamofire.request(.GET, skuRequest)
+                        .responseJSON { (req, res, json, error) in
+                            if error != nil {
+                                self.log.error("AFrequest='\(req)', response='\(res)', failed with error='\(error)'")
+                                let errDetail = res?.allHeaderFields
+                                let errCode = res?.statusCode
+                                let aTitle = "Oops, something went wrong!"
+                                let aMesg = "\(errDetail)"
+                                let alert: UIAlertController = UIAlertController(title: aTitle, message: aMesg, preferredStyle: UIAlertControllerStyle.Alert)
+                                let actionOK: UIAlertAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
+                                alert.addAction(actionOK)
+                                self.presentViewController(alert, animated: true, completion: nil)
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    progressHUD.progress += progressStep
+                                }
+                            } else {
+                                let json = JSON(json!)
+                                let bbProduct = BestBuyProduct(json: json.dictionaryValue, session: session)
+                                self.accessoryProductList.append(bbProduct)
+                                productItem.accessoryProducts = self.accessoryProductList
+                                // Note: need to add update-call since last accessoryProductList.didSet doesn't do it!??
+                                self.updateAccessoryList()
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    progressHUD.progress += progressStep
+                                }
+                            }
+                    }
+                    // Note: If we get the error "Account Over Queries Per Second Limit"
+                    //       we need to add a delay between consecutive calls here.
+                    var delayQueriesPerSecondLimit: NSTimeInterval = 0.21
+                    NSThread.sleepForTimeInterval(delayQueriesPerSecondLimit)
                 }
-                // Note: If we get the error "Account Over Queries Per Second Limit"
-                //       we need to add a delay between consecutive calls here.
-                var delayQueriesPerSecondLimit: NSTimeInterval = 0.21
-                NSThread.sleepForTimeInterval(delayQueriesPerSecondLimit)
+                dispatch_async(dispatch_get_main_queue()) {
+                    progressHUD.hide(true)
+                }
             }
         }
     }
@@ -107,7 +124,7 @@ class ProductAccesoryViewController: UIViewController, UICollectionViewDelegateF
     func updateAccessoryList() {
         if let accessoryCollection = productCollectionView, let accessories = accessoryProductList {
             accessoryCollection.reloadData()
-            self.title = "Accesories (" + String(accessories.count) + ")"
+            self.title = "Accessories (" + String(accessories.count) + ")"
         }
     }
 

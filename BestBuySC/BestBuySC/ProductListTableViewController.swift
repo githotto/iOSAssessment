@@ -11,6 +11,7 @@ import Loggerithm
 import Alamofire
 import SwiftyJSON
 import Haneke
+import MBProgressHUD
 
 class ProductListTableViewController: UITableViewController {
     // MARK: - Logger
@@ -82,12 +83,22 @@ class ProductListTableViewController: UITableViewController {
     func getProducts() {
         log.debug("")
         if let session = self.sessionItem as? BestBuySession {
+            // Reset producList.
             productList = [BestBuyProduct]()
             session.searchResults = productList
+            // Create an activity/progress-view.
+            let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            progressHUD.labelText = "Fetching products ..."
+            progressHUD.mode = MBProgressHUDMode.Indeterminate
+
+            // Note: Since Alamofire works in async, we do NOT need to add an
+            //       dispatch_async(dispatch_get_main_queue()){..} here for progressHUD.
+            // Perform request.
             Alamofire.request(.GET, session.searchRequest)
                 .responseJSON { (req, res, json, error) in
                     if error != nil {
                         self.log.error("AFrequest='\(req)', response='\(res)', failed with error='\(error)'")
+                        progressHUD.hide(true)
                     } else {
                         let json = JSON(json!)
                         let products = json["products"]
@@ -99,11 +110,14 @@ class ProductListTableViewController: UITableViewController {
                         session.searchResults = self.productList
                         //Note: need to add below update-call since last productList.didSet doesn't do it!??
                         self.updateProductList()
+                        progressHUD.hide(true)
                     }
                 }
-                .responseString { (_, _, string, _) in
-                    session.saveResponse(string!, path: session.searchResponsePath)
-            }
+                // Note: If you want to save the response uncomment code below!
+//                .responseString { (_, _, string, _) in
+//                    session.saveResponse(string!, path: session.searchResponsePath)
+//                    progressHUD.hide(true)
+//                }
         }
     }
 
